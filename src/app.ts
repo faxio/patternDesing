@@ -8,6 +8,16 @@ import {
   HotDog as HotDog2,
   ConcreteHotDog,
 } from "./PatternDesign/Builder/builderRestrictivo/HotDog";
+import {
+  AdapterTemperatura,
+  ClimaInterface,
+  Temperatura,
+} from "./PatternDesign/Adapter/Example";
+import {
+  ConcreteStrategyAuto,
+  ConcreteStrategyBicicleta,
+  Rutas,
+} from "./PatternDesign/Strategy/RutasExample";
 
 function factoryPattern() {
   // Producto 1
@@ -38,6 +48,16 @@ function singletonPattern() {
   }
 }
 
+function adapterPattern() {
+  // Tiene la temperatura en Fahrenheit
+  const temperatura = new Temperatura();
+
+  const adapter = new ClimaInterface();
+  const clima = new AdapterTemperatura(adapter);
+
+  clima.getTemperatura(temperatura.getTemperatura());
+}
+
 function builderPattern() {
   const myLunch = new HotDog("gluten free").addKetchup().addMustard();
   console.log(myLunch);
@@ -59,12 +79,26 @@ function builderPattern() {
     .getProductComplete();
 }
 
+function strategyPattern() {
+  const auto = new ConcreteStrategyAuto();
+  const ruta = new Rutas(auto);
+  // Estrategia auto
+  ruta.obtenerTiempo();
+
+  // estrategia bicileta
+  const bicicleta = new ConcreteStrategyBicicleta();
+  ruta.setStrategy(bicicleta);
+  ruta.obtenerTiempo();
+}
+
 function main() {
   console.log(" Patrones de diseño! ");
   factoryPattern();
   facadePattern();
   singletonPattern();
   builderPattern();
+  adapterPattern();
+  strategyPattern();
 }
 
 main();
