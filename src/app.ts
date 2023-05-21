@@ -18,6 +18,23 @@ import {
   ConcreteStrategyBicicleta,
   Rutas,
 } from "./PatternDesign/Strategy/RutasExample";
+import {
+  Remote,
+  RemoteAdvanced,
+  Device,
+  Radio,
+  TV,
+} from "./PatternDesign/Bridge/01-example/BridgeExample";
+import {
+  ConcreteObserverA,
+  ConcreteObserverB,
+  ConcreteSubject,
+} from "./PatternDesign/Observer/Observer";
+import {
+  Influencer,
+  Persona1,
+  Persona2,
+} from "./PatternDesign/Observer/01-example/Subscription";
 
 function factoryPattern() {
   // Producto 1
@@ -91,6 +108,40 @@ function strategyPattern() {
   ruta.obtenerTiempo();
 }
 
+async function bridgePattern() {
+  let radio = new Radio();
+  let remote = new Remote(radio);
+
+  /* Interacción */
+  remote.togglePower();
+  console.log(radio.isEnabled());
+  remote.togglePower();
+  console.log(radio.isEnabled());
+
+  let tv = new TV();
+  let remote2 = new RemoteAdvanced(tv);
+
+  remote2.togglePower();
+  await remote2.timeToOff(1000);
+  console.log(tv.isEnabled());
+}
+
+function observerPattern() {
+  const influencer = new Influencer();
+
+  const observer1 = new Persona1();
+  influencer.attach(observer1);
+
+  const observer2 = new Persona2();
+  influencer.attach(observer2);
+
+  influencer.nuevoVideoDisponible();
+
+  influencer.detach(observer2);
+
+  influencer.nuevoVideoDisponible();
+}
+
 function main() {
   console.log(" Patrones de diseño! ");
   factoryPattern();
@@ -99,6 +150,8 @@ function main() {
   builderPattern();
   adapterPattern();
   strategyPattern();
+  observerPattern();
+  bridgePattern();
 }
 
 main();
